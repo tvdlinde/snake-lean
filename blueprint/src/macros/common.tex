@@ -1,0 +1,131 @@
+% Macros lifted from snake.tex's preamble, with the xy-pic and tikz-cd definitions
+% dropped: plasTeX cannot parse them, and each diagram is instead compiled to SVG by
+% real LaTeX (with the paper's own preamble, \newdir lines included) and included as
+% an image.  This file is maintained by hand: a macro new to snake.tex has to be
+% copied here, or the blueprint renders it undefined.  Definitions here must also be ones
+% MathJax understands: \mathpzc, \xspace and lengths such as \horspace are not, and leak
+% into the page as literal text.  MathJax has the AMS packages and nothing more, so a macro
+% that can only expand to mathtools (\xRightarrow, \coloneq) keeps its mathtools spelling
+% here, where the pdf version reads it, and is shimmed for the web in macros/web.tex.
+% The paper numbers its results by subsection, sharing one counter; reproducing that
+% here makes every blueprint number equal to the number printed in the paper.
+\newtheorem{theorem}[subsection]{Theorem}
+\newtheorem{proposition}[subsection]{Proposition}
+\newtheorem{lemma}[subsection]{Lemma}
+\newtheorem{corollary}[subsection]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[subsection]{Definition}
+\newtheorem{example}[subsection]{Example}
+\newtheorem{remark}[subsection]{Remark}
+\newtheorem{convention}[subsection]{Convention}
+\newtheorem{notation}[subsection]{Notation}
+\newenvironment{tfae}{\begin{enumerate}}{\end{enumerate}}
+\newenvironment{enum}{\begin{enumerate}}{\end{enumerate}}
+\newenvironment{enumT}{\begin{enumerate}}{\end{enumerate}}
+% `eqD` is rewritten to `equation` by genblueprint.py, which decides per display whether
+% its body is a diagram image (then `center`) or a formula (then MathJax); no shim here.
+
+\newcommand{\noproof}{\hfill \qed}
+\def\nameit#1{\textrm{#1}~}
+\def\thex{\nameit{Theorem}}
+\def\prox{\nameit{Proposition}}
+\def\corx{\nameit{Corollary}}
+\def\lemx{\nameit{Lemma}}
+\def\defx{\nameit{Definition}}
+\def\remx{\nameit{Remark}}
+\def\exax{\nameit{Example}}
+\def\dfn#1{{\itshape #1}}
+\newcommand{\refs}[1]{\textup{(}\ref{#1}\textup{)}}
+\newcommand{\h}[1][1.0]{\,}
+\def\:{\colon}
+\def\c{\circ}
+\newcommand{\comp}{\circ}
+\newcommand{\iso}{\cong}
+\newcommand{\ov}[1]{\overline{#1}}
+\def\phi{\varphi}
+\def\eps{\varepsilon}
+\newcommand{\catfont}[1]{\ensuremath{\mathit{#1}}}
+\newcommand{\onecat}[1]{\ensuremath{\mathsf{#1}}}
+\def\L{\catfont{L}}
+\newcommand{\Cat}{\catfont{Cat}}
+\newcommand{\AbCat}{\catfont{AbCat}}
+\newcommand{\Triang}{\catfont{Triang}}
+\newcommand{\Sat}{\catfont{Sat}}
+\newcommand{\LAdj}{\catfont{LAdj}}
+\newcommand{\Sup}{\catfont{Sup}}
+\newcommand{\Supmod}{\ensuremath{\mathit{Sup}_{\mathrm{mod}}}}
+\newcommand{\Suphil}{\ensuremath{\mathit{Sup}_{\mathrm{hil}}}}
+\renewcommand{\1}{\onecat{1}}
+\newcommand{\Grp}{\onecat{Grp}}
+\newcommand{\Ab}{\onecat{Ab}}
+\newcommand{\Perf}{\onecat{Perf}}
+\newcommand{\HypAb}{\onecat{HypAb}}
+\newcommand{\Nil}{\onecat{Nil}}
+\newcommand{\CMon}{\onecat{CMon}}
+\newcommand{\SES}{\onecat{SES}}
+\newcommand{\VectF}{\ensuremath{\mathsf{Vect}_{F}}}
+\newcommand{\Mlc}{\onecat{Mlc}}
+\newcommand{\Coh}{\onecat{Coh}}
+\newcommand{\Scl}{\ensuremath{\mathrm{Sc}}}
+\newcommand{\Lat}{\ensuremath{\mathrm{L}}}
+\newcommand{\dseg}[1]{\ensuremath{{\downarrow}#1}}
+\newcommand{\useg}[1]{\ensuremath{{\uparrow}#1}}
+\newcommand{\trunc}{\ensuremath{\tau_{1}}}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\ASpec}{ASpec}
+\DeclareMathOperator{\ASupp}{ASupp}
+\DeclareMathOperator{\AAss}{AAss}
+\newcommand{\AS}{\textup{(AS)}}
+\newcommand{\DPN}{\textup{(DPN)}}
+\newcommand{\NEC}{\textup{(NEC)}}
+\newcommand{\Ker}{\ensuremath{\mathrm{Ker}}}
+\newcommand{\Coker}{\ensuremath{\mathrm{Cok}}}
+\newcommand{\coker}{\ensuremath{\mathrm{coker}}}
+\newcommand{\TwoKer}{\ensuremath{2\text{-}\mathrm{Ker}}}
+\newcommand{\TwoCoker}{\ensuremath{2\text{-}\mathrm{Cok}}}
+\newcommand{\twoker}{\ensuremath{2\text{-}\mathrm{ker}}}
+\newcommand{\twocoker}{\ensuremath{2\text{-}\mathrm{coker}}}
+\renewcommand{\Im}{\ensuremath{\mathrm{Im}}}
+\newcommand{\im}{\ensuremath{\mathrm{im}}}
+\newcommand{\Coim}{\ensuremath{\mathrm{Coim}}}
+\newcommand{\coim}{\ensuremath{\mathrm{coim}}}
+\newcommand{\TwoImg}{\ensuremath{2\text{-}\mathrm{Im}}}
+\newcommand{\twoimg}{\ensuremath{2\text{-}\mathrm{im}}}
+\newcommand{\TwoCoim}{\ensuremath{2\text{-}\mathrm{Coim}}}
+\newcommand{\twocoim}{\ensuremath{2\text{-}\mathrm{coim}}}
+\newcommand{\Hker}[2]{\ensuremath{\mathrm{H}^{\ker}_{#1}(#2)}}
+\newcommand{\Hcoker}[2]{\ensuremath{\mathrm{H}^{\coker}_{#1}(#2)}}
+\newcommand{\HomC}[3]{{#1}\left({#2},\h[1]{#3}\right)}
+\newcommand{\id}[1]{\operatorname{id}_{#1}}
+\newcommand{\op}{\ensuremath{^{\operatorname{op}}}}
+\newcommand{\too}{\longrightarrow}
+\newcommand{\ito}{\hookrightarrow}
+\newcommand{\iito}{\rightarrowtail}
+\newcommand{\toe}{\twoheadrightarrow}
+\newcommand{\aar}[2][]{\xrightarrow[#1]{#2}}
+% The paper builds these two extensible arrows from amsmath internals (\ext@arrow,
+% \Rightarrowfill@), which MathJax cannot expand and prints as red literal text.  These
+% are the same arrows from MathJax's extpfeil package, which its autoload provides.
+\newcommand{\aR}[2][]{\xRightarrow[#1]{#2}}
+\newcommand{\aeqq}[2][]{\xlongequal[#1]{#2}}
+\newcommand*{\comment}[4][]{%
+  \@ifundefined{c@#2}{\newcounter{#2}}{}%
+  \begingroup
+  \ifblank{#1}{%
+    \newcommand*{\header}{\csname the#2\endcsname}%
+  }{%
+    \newcommand*{\header}{(#1\csname the#2\endcsname)}%
+  }%
+  \addtocounter{#2}{1}%
+  \textnormal{\textcolor{#3}{\header.[#4\@]}}%
+  \endgroup
+}
+\newcommand*{\elena}[1]{\comment[E]{elena}{orange}{#1}}
+\newcommand*{\tim}[1]{\comment[T]{tim}{teal}{#1}}
+\newcommand*{\luca}[1]{\comment[L]{luca}{brown}{#1}}
+\newcommand*{\todo}[1]{\comment{todo}{blue}{#1}}

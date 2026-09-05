@@ -1,0 +1,12 @@
+% Macros for the web version only.
+%
+% MathJax knows the AMS packages and nothing beyond them.  `\xRightarrow` and `\coloneq`
+% are mathtools, plasTeX has only a stub for that package, so both reach the page
+% unexpanded and MathJax prints them in red.  The print version keeps the mathtools
+% spellings; here they are replaced by their AMS equivalents.  Every use of `\aR` in the
+% paper is unlabelled, which is why the label may be dropped; `check-mathjax.py` in the
+% paper repository checks that, and checks the rendered pages for anything else that leaks
+% through.
+\renewcommand{\aR}[2][]{\Longrightarrow}
+\renewcommand{\aeqq}[2][]{\xlongequal[#1]{#2}}
+\newcommand{\coloneq}{\mathrel{:=}}

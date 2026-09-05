@@ -1,0 +1,22 @@
+{
+  "upload_type": "software",
+  "title": "A two-categorical Snake Lemma: Lean 4 formalisation",
+  "description": "<p>A Lean 4 / Mathlib formalisation accompanying the paper <em>A two-categorical Snake Lemma</em>, by Elena Caviglia, Luca Mesiti and Tim Van der Linden.</p><p>It machine-checks 2-kernels and 2-cokernels, 2-monomorphisms and 2-epimorphisms, normality and dinversion, short 2-exact sequences, the Pure Snake Lemma, and the Snake Lemma itself both in a 2-di-exact 2-category and under the non-self-dual hypotheses, with the classical Snake Lemma recovered as the locally discrete case. It also carries the lattice models and the abelian-category material of the paper's later sections.</p><p>The repository ships a leanblueprint view of the paper, published at <a href=\"https://tvdlinde.github.io/snake-lean/\">https://tvdlinde.github.io/snake-lean/</a>, whose dependency graph records which statements are formalised and which are not.</p><p>The formalisation is supplementary: no argument of the paper rests on it.</p>",
+  "creators": [
+    { "name": "Caviglia, Elena" },
+    { "name": "Mesiti, Luca" },
+    { "name": "Van der Linden, Tim" }
+  ],
+  "license": "apache-2.0",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "Lean 4",
+    "Mathlib",
+    "formalisation",
+    "2-category",
+    "snake lemma",
+    "homological algebra",
+    "category theory"
+  ]
+}

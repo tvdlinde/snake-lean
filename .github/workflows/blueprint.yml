@@ -1,0 +1,69 @@
+# Builds the html blueprint and publishes it to GitHub Pages.
+#
+# No LaTeX run is needed: the diagrams are compiled to SVG on the author's machine and cached in
+# blueprint/src/diagrams/, so plasTeX only copies them, and the mathematics is set by MathJax in
+# the reader's browser.  Verified by running `leanblueprint web` over a clean checkout with
+# pdflatex, latex, xelatex, lualatex, dvisvgm, dvipng, gs, convert, pdf2svg and pdfcrop all
+# replaced by failing stubs: the only calls were `--help` probes, and the output was identical.
+#
+# What IS needed is kpsewhich, from texlive-binaries.  plasTeX resolves \input{macros/common}
+# through it, and its pure-Python fallback matches filenames exactly -- no .tex extension, no
+# subdirectories -- so without kpsewhich the macro files are skipped in silence, every theorem
+# environment becomes an unknown macro, and the dep-graph plugin dies on them with
+# `TypeError: unhashable type: 'definition'`.  Nothing else from TeX Live is used: no fonts, no
+# .sty files, no format.
+#
+# The deploy job is skipped everywhere but the public release repository, so the same file is
+# harmless in the private working copy, where it still checks that the blueprint builds.
+name: Blueprint
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install kpsewhich
+        # texlive-binaries alone is not enough: it ships the binary but no texmf.cnf, so kpathsea
+        # fails to initialise and kpsewhich answers nothing, which plasTeX reports as
+        # `Could not find any file named: web.tex`.  texlive-base supplies the configuration.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends texlive-base
+          kpsewhich --version | head -1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install leanblueprint
+        # Pinned to what the author's machine runs, so CI renders what was checked there.
+        # `leanblueprint --version` reports 1.9.8, which is rich-click's version, not its own.
+        run: pip install leanblueprint==0.0.20 plasTeX==3.1 plastexdepgraph==0.0.5 plastexshowmore==0.0.2
+      - name: Build the blueprint
+        run: leanblueprint web
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: blueprint/web
+
+  deploy:
+    needs: build
+    if: github.repository == 'tvdlinde/snake-lean'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
